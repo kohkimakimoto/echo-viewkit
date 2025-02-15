@@ -91,7 +91,7 @@ And then, you can pass data to components by using attributes.
 If you want to pass expressions and variables to components, you can use the `:` prefix.
 
 ```html
-<x-alert text="Error message here!" color="color"/>
+<x-alert text="Error message here!" color="red"/>
 <!-- use variable -->
 <x-alert :text="text" :color="color"/>
 ```
@@ -471,7 +471,7 @@ For examples:
 - filepath:`views/components/primary-button.html` => component name:`primary-button`, tag name:`<x-primary-button>`
 - filepath:`views/components/button/primary.html` => component name:`button.primary`, tag name:`<x-button.primary>`
 
-With the `Prefix: "ui"`:
+With the `Prefix: "ui."`:
 
 - filepath:`views/ui-components/primary-button.html` => component name:`ui.primary-button`, tag name:`<x-ui.primary-button>`
 - filepath:`views/ui-components/button/primary.html` => component name:`ui.button.primary`, tag name:`<x-ui.button.primary>`
