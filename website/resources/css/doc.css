@@ -1,0 +1,42 @@
+.doc {
+  @apply relative w-full;
+}
+.doc h1 {
+  @apply text-4xl font-bold mb-4;
+}
+.doc h2 {
+  @apply text-2xl font-bold mt-10 mb-4;
+}
+.doc h3 {
+  @apply text-xl font-bold mt-6 mb-4;
+}
+.doc h4 {
+  @apply text-lg font-bold mt-6 mb-4;
+}
+.doc p {
+  @apply mb-4 leading-7;
+}
+.doc a {
+  @apply text-blue-500 hover:text-blue-700;
+}
+.doc p code, .doc li code {
+  @apply bg-gray-100 py-0.5 px-1.5 rounded border border-gray-200 font-mono text-sm text-rose-700;
+}
+.doc pre {
+  @apply relative;
+}
+.doc pre code.hljs {
+  @apply mb-4 text-sm rounded;
+}
+.doc ul {
+  @apply mb-4 pl-4 list-disc;
+}
+.doc li {
+  @apply mb-2 list-item leading-7;
+}
+.doc blockquote {
+  @apply border-l-4 border-gray-300 pl-4 py-2 my-4;
+}
+.doc blockquote p {
+  @apply mb-0 text-gray-500;
+}

@@ -1,0 +1,174 @@
+<x-layouts.app title="Echo ViewKit">
+  <div class="mx-auto max-w-4xl py-32 sm:py-48 lg:py-56 px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-balance text-4xl font-semibold text-gray-900 sm:text-6xl">
+        A comprehensive view package for Echo.
+      </h1>
+      <p class="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
+        Echo ViewKit provides a comprehensive server side template rendering for <a href="https://echo.labstack.com/" target="_blank" class="text-blue-500 hover:text-blue-700">Echo</a>.
+      </p>
+      <div class="mt-10 flex items-center justify-center gap-x-6">
+        <a href="/docs/getting-started" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
+      </div>
+    </div>
+  </div>
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-10 lg:grid-cols-2 lg:items-start mb-20">
+      <div>
+        <h2 class="text-base/7 font-semibold text-indigo-600">Server side rendering</h2>
+        <p class="mt-2 text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+          Templating engine.
+        </p>
+        <p class="mt-6 text-lg/8 text-gray-600">
+          Echo ViewKit has a built-in templating engine that is forked from <a href="https://github.com/flosch/pongo2" target="_blank" class="text-blue-500 hover:text-blue-700">Pongo2</a>.
+          It provides a Django-like syntax.
+          It is easy to use in your Echo application.
+        </p>
+        <a href="/docs/pongo2-templates" class="inline-flex items-center gap-x-1 mt-6 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 hover:bg-indigo-100">
+          <span>Learn more</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+            <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+      <div class="relative isolate overflow-hidden bg-indigo-500 pt-8 w-full sm:rounded-xl sm:pl-16 sm:pr-0 sm:pt-16">
+        <div class="absolute -inset-y-px -left-3 -z-10 w-full origin-bottom-left skew-x-[-30deg] bg-indigo-100 opacity-20 ring-1 ring-inset ring-white" aria-hidden="true"></div>
+        <div class="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
+          <div class="overflow-hidden rounded-tl-xl bg-gray-900 ring-1 ring-white/10">
+            <div class="flex bg-gray-800/40 ring-1 ring-white/5">
+              <div class="-mb-px flex text-sm/6 font-medium text-gray-400">
+                <div class="border-b border-r border-b-white/20 border-r-white/10 bg-white/5 px-4 py-2 text-white">index.html</div>
+              </div>
+            </div>
+            <div class="text-sm">
+            <pre><code class="language-django">
+{%- filter escape -%}{% verbatim %}
+{# if statement #}
+{% if errorMessage %}
+  <div>{{ errorMessage }}</div>
+{% endif %}
+
+{# for loop #}
+{% for user in users %}
+  <div>{{ user.Name }}</div>
+{% endfor %}
+{% endverbatim %}{%- endfilter -%}
+            </code></pre>
+            </div>
+            <div class="flex bg-gray-800/40 ring-1 ring-white/5">
+              <div class="-mb-px flex text-sm/6 font-medium text-gray-400">
+                <div class="border-b border-r border-b-white/20 border-r-white/10 bg-white/5 px-4 py-2 text-white">server.go</div>
+              </div>
+            </div>
+            <div class="pb-4 text-sm">
+            <pre><code class="language-go">
+{%- filter escape -%}{% verbatim %}
+// Go code that calls the above template.
+
+type IndexProps struct {
+	ErrorMessage string  `pongo2:"errorMessage"`
+	Users        []*User `pongo2:"users"`
+	// ...
+}
+
+func IndexHandler(c echo.Context) error {
+	users := ...
+	return c.Render(http.StatusOK, "index", &IndexProps{
+		ErrorMessage: "Something went wrong.",
+		Users users,
+	})
+}
+{% endverbatim %}{%- endfilter -%}
+            </code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/10 sm:rounded-xl" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-10 lg:grid-cols-2 lg:items-start mb-20">
+      <div class="lg:order-2">
+        <h2 class="text-base/7 font-semibold text-indigo-600">Encapsulate and reuse parts of your views</h2>
+        <p class="mt-2 text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+          Component-based.
+        </p>
+        <p class="mt-6 text-lg/8 text-gray-600">
+          You can use component-based architecture like <a href="https://laravel.com/docs/11.x/blade#components" target="_blank" class="text-blue-500 hover:text-blue-700">Laravel Blade</a>.
+          It enhances code organization and maintainability.
+          You can implement your components with Go code and Pongo2 templates.
+        </p>
+        <a href="/docs/components" class="inline-flex items-center gap-x-1 mt-6 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 hover:bg-indigo-100">
+          <span>Learn more</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+            <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+      <div class="relative isolate overflow-hidden bg-indigo-500 pt-8 w-full sm:rounded-xl sm:pl-16 sm:pr-0 sm:pt-16">
+        <div class="absolute -inset-y-px -left-3 -z-10 w-full origin-bottom-left skew-x-[-30deg] bg-indigo-100 opacity-20 ring-1 ring-inset ring-white" aria-hidden="true"></div>
+        <div class="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
+          <div class="overflow-hidden rounded-tl-xl bg-gray-900 ring-1 ring-white/10">
+            <div class="flex bg-gray-800/40 ring-1 ring-white/5">
+              <div class="-mb-px flex text-sm/6 font-medium text-gray-400">
+                <div class="border-b border-r border-b-white/20 border-r-white/10 bg-white/5 px-4 py-2 text-white">index.html</div>
+              </div>
+            </div>
+            <div class="pb-4 text-sm">
+            <pre><code class="language-html">
+{%- filter escape -%}{% verbatim %}
+{# render an alert message... #}
+<x-alert type="success" :message="message"/>
+
+{# slots are supported... #}
+<x-alert>
+  <x-slot name="title">Custom title</x-slot>
+  <x-slot name="message">This is a success message.</x-slot>
+</x-alert>
+
+{# scoped slots are also supported... #}
+<x-counter slot-data="{count}" >
+  <div>{{ count }}</div>
+</x-counter>
+{% endverbatim %}{%- endfilter -%}
+            </code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/10 sm:rounded-xl" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-gray-50 py-20 [clip-path:polygon(0_0%,100%_10%,100%_90%,0%_100%)] md:[clip-path:polygon(0_0%,100%_25%,100%_75%,0%_100%)]">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">
+        <div>
+          <h2 class="text-base/7 font-semibold text-indigo-600">Integrated with front-end tools</h2>
+          <p class="mt-2 text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+            Vite integration.
+          </p>
+          <p class="mt-6 text-lg/8 text-gray-600">
+            You can use <a href="https://vite.dev/" target="_blank" class="text-blue-500 hover:text-blue-700">Vite</a> to build your front-end assets and integrate them with Echo ViewKit.
+          </p>
+          <a href="/docs/vite" class="inline-flex items-center gap-x-1 mt-6 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 hover:bg-indigo-100">
+            <span>Learn more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+              <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col items-center mx-auto max-w-7xl px-6 lg:px-8 py-20">
+    <h2 class="text-center text-balance text-3xl font-semibold text-gray-900 sm:text-4xl">
+      Are you looking for real code examples?
+    </h2>
+    <p class="text-center mt-6 text-lg/8 text-gray-600">
+      Absolutely! This website is built with Echo ViewKit.
+      You can see the entire source code.
+    </p>
+    <a href="https://github.com/kohkimakimoto/echo-viewkit/tree/main/website" target="_blank" class="mt-6 inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-100 bg-white border-2 rounded-md text-neutral-900 hover:text-white border-neutral-900 hover:bg-neutral-900">
+      <span>View the source code</span>
+    </a>
+  </div>
+</x-layouts.app>

@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@import "./doc.css";
+@source "../views";
+@source "../docs";

@@ -1,0 +1,17 @@
+{% props toc %}
+{% macro render_toc(items) %}
+  <ul class="mb-4 text-neutral-500 text-sm">
+    {% for item in items %}
+      <li class="{% if item.Level == 3 %}ml-4 list-disc{% endif %}">
+        <a href="#{{ item.Id }}" class="block text-wrap text-neutral-500 hover:text-neutral-800 hover:underline mb-2">{{ item.Title }}</a>
+        {% if item.Children and item.Children|length > 0 %}
+          {{ render_toc(item.Children) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
+{% if toc %}
+  <h2 class="font-bold uppercase text-gray-500 text-sm mb-4">On this page</h2>
+  {{ render_toc(toc) }}
+{% endif %}

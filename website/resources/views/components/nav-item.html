@@ -1,0 +1,4 @@
+{% props link, title %}
+<li>
+  <a class="block {% if url_path == link %}font-semibold text-blue-700{% else %}text-neutral-600 hover:text-neutral-900 {% endif %}" href="{{ link }}">{{ title }}</a>
+</li>
