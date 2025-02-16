@@ -3,8 +3,9 @@ package viewkit
 import (
 	"encoding/json"
 	"errors"
-	"github.com/labstack/echo/v4"
 	"net/url"
+
+	"github.com/labstack/echo/v4"
 )
 
 func IsDebugFunctionProvider(debug bool) SharedContextProviderFunc {

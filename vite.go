@@ -3,13 +3,14 @@ package viewkit
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kohkimakimoto/echo-viewkit/pongo2"
-	"github.com/labstack/echo/v4"
 	"io/fs"
 	"os"
 	"path"
 	"regexp"
 	"strings"
+
+	"github.com/kohkimakimoto/echo-viewkit/pongo2"
+	"github.com/labstack/echo/v4"
 )
 
 // Vite integration
