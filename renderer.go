@@ -2,10 +2,11 @@ package viewkit
 
 import (
 	"bytes"
-	"github.com/kohkimakimoto/echo-viewkit/pongo2"
-	"github.com/labstack/echo/v4"
 	"io"
 	"strings"
+
+	"github.com/kohkimakimoto/echo-viewkit/pongo2"
+	"github.com/labstack/echo/v4"
 )
 
 // Renderer is a renderer implementation for Echo.
