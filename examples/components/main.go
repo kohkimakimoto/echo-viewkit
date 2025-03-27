@@ -1,10 +1,11 @@
 package main
 
 import (
+	"net/http"
+
 	viewkit "github.com/kohkimakimoto/echo-viewkit"
 	"github.com/kohkimakimoto/echo-viewkit/pongo2"
 	"github.com/labstack/echo/v4"
-	"net/http"
 )
 
 func main() {
@@ -44,7 +45,7 @@ var Greeting = &pongo2.Component{
 	},
 }
 
-type AlertProps struct {
+type AlertData struct {
 	Message string `pongo2:"message"`
 	Type    string `pongo2:"type"`
 }
@@ -54,7 +55,7 @@ var Alert = &pongo2.Component{
 	TemplateFile: "components/alert",
 	Props:        []string{"message", "type"},
 	Setup: func(ctx *pongo2.ComponentExecutionContext) error {
-		if err := ctx.Defaults(&AlertProps{
+		if err := ctx.Defaults(&AlertData{
 			Message: "This is an alert message.",
 			Type:    "info",
 		}); err != nil {
