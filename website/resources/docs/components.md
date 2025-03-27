@@ -346,46 +346,46 @@ The `Setup` function is a good place to initialize or configure the data.
 You can use helper methods for working with component data like the following:
 
 ```go
-// Set the default value for the message prop
+// Set the default value for the message data. If the message data is not passed by props, the default value is used.
 ctx.Default("message", "The default message")
 
-// Override the message prop
+// Override the message data
 ctx.Set("message", "The new message")
 
-// Delete the message prop
+// Delete the message data
 ctx.Delete("message")
 
 // Get component attributes
 attributes := ctx.Attributes()
 ```
 
-If you prefer using a struct type, you can define a struct for component props and use the following methods:
+If you prefer using a struct type, you can define a struct for component data and use the following methods:
 
 ```go
-// Define the AlertProps struct
-type AlertProps struct {
+// Define the AlertData struct
+type AlertData struct {
 	Message string `pongo2:"message"`
 	Type    string `pongo2:"type"`
 }
 
 // In the Setup function
 
-// Set default values for the props
-if err := ctx.Defaults(&AlertProps{
+// Set default values for the data
+if err := ctx.Defaults(&AlertData{
 	Message: "This is an alert message.",
 	Type: "info",
 }); err != nil {
 	return err
 }
 
-// Get the props
-props := &AlertProps{}
-if err := ctx.Bind(props); err != nil {
+// Bind the data struct from the passed props
+data := &AlertData{}
+if err := ctx.Bind(data); err != nil {
 	return err
 }
 
-// Override the props
-if err := ctx.Update(&AlertProps{
+// Update the data
+if err := ctx.Update(&AlertData{
 	Message: "The new message",
 	Type: "warning",
 }); err != nil {
