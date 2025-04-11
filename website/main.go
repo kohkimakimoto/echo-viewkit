@@ -5,15 +5,16 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+
 	viewkit "github.com/kohkimakimoto/echo-viewkit"
 	"github.com/kohkimakimoto/echo-viewkit/pongo2"
 	"github.com/kohkimakimoto/echo-viewkit/website/app/handlers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"log"
-	"net/http"
-	"os"
-	"strings"
 )
 
 var (
