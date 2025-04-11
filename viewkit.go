@@ -259,46 +259,41 @@ func (v *ViewKit) StartViteDevServer() error {
 	args := v.ViteDevServerCommand[1:]
 
 	cmd := exec.Command(command, args...)
-	if v.ViteDevServerLogPrefix == "" {
-		cmd.Stdout = v.ViteDevServerStdout
-		cmd.Stderr = v.ViteDevServerStderr
-	} else {
-		// use pipes to add a prefix to each line.
-		m := new(sync.Mutex)
-		wg := &sync.WaitGroup{}
+	// use pipes to add a prefix to each line.
+	m := new(sync.Mutex)
+	wg := &sync.WaitGroup{}
 
-		stdout, err := cmd.StdoutPipe()
-		if err != nil {
-			return fmt.Errorf("failed to get stdout pipe: %w", err)
-		}
-		wg.Add(1)
-		go func() {
-			if err := v.scanLines(stdout, v.ViteDevServerStdout, v.ViteDevServerLogPrefix, m); err != nil {
-				_, _ = fmt.Fprintf(v.ViteDevServerStderr, "failed to scan stdout: %v", err)
-			}
-			wg.Done()
-		}()
-
-		stderr, err := cmd.StderrPipe()
-		if err != nil {
-			return fmt.Errorf("failed to get stderr pipe: %w", err)
-		}
-		wg.Add(1)
-		go func() {
-			if err := v.scanLines(stderr, v.ViteDevServerStderr, v.ViteDevServerLogPrefix, m); err != nil {
-				_, _ = fmt.Fprintf(v.ViteDevServerStderr, "failed to scan stderr: %v", err)
-			}
-			wg.Done()
-		}()
-
-		err = cmd.Start()
-		if err != nil {
-			return err
-		}
-		wg.Wait()
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return fmt.Errorf("failed to get stdout pipe: %w", err)
 	}
+	wg.Add(1)
+	go func() {
+		if err := v.scanLines(stdout, v.ViteDevServerStdout, v.ViteDevServerLogPrefix, m); err != nil {
+			_, _ = fmt.Fprintf(v.ViteDevServerStderr, "failed to scan stdout: %v", err)
+		}
+		wg.Done()
+	}()
 
-	err := cmd.Wait()
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		return fmt.Errorf("failed to get stderr pipe: %w", err)
+	}
+	wg.Add(1)
+	go func() {
+		if err := v.scanLines(stderr, v.ViteDevServerStderr, v.ViteDevServerLogPrefix, m); err != nil {
+			_, _ = fmt.Fprintf(v.ViteDevServerStderr, "failed to scan stderr: %v", err)
+		}
+		wg.Done()
+	}()
+
+	err = cmd.Start()
+	if err != nil {
+		return err
+	}
+	wg.Wait()
+
+	err = cmd.Wait()
 	if err != nil {
 		return err
 	}
