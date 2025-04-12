@@ -1,8 +1,9 @@
 package pongo2
 
 import (
-	"github.com/mitchellh/mapstructure"
 	"reflect"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 func MarshalContext(data any) (Context, error) {
@@ -46,7 +47,11 @@ func UnmarshalContext(c Context, dst any) error {
 
 func valueConvertHook(from reflect.Type, to reflect.Type, data any) (any, error) {
 	if from == reflect.TypeOf(&Value{}) {
-		return data.(*Value).Interface(), nil
+		v := data.(*Value).Interface()
+		if v == nil {
+			return reflect.Zero(to).Interface(), nil
+		}
+		return v, nil
 	}
 	return data, nil
 }
