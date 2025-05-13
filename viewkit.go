@@ -34,7 +34,10 @@ type ViewKit struct {
 	DefaultTemplateFileExtension string
 	// PreProcessors is a list of PreProcessor.
 	PreProcessors []pongo2.PreProcessor
-
+	// Filters is a map of filters to be registered.
+	Filters map[string]pongo2.FilterFunction
+	// Tags is a map of tags to be registered.
+	Tags map[string]pongo2.TagParser
 	// Component config
 
 	// DisableComponentHTMLTag disables the HTML syntax extension for components.
@@ -106,6 +109,8 @@ func New() *ViewKit {
 		BaseDir:                               "",
 		DefaultTemplateFileExtension:          ".html",
 		PreProcessors:                         []pongo2.PreProcessor{},
+		Filters:                               map[string]pongo2.FilterFunction{},
+		Tags:                                  map[string]pongo2.TagParser{},
 		DisableComponentHTMLTag:               false,
 		ComponentHTMLTagPrefix:                "x-",
 		Components:                            []*pongo2.Component{},
@@ -185,6 +190,20 @@ func (v *ViewKit) Renderer() (*Renderer, error) {
 	// configuration for components
 	ts.ComponentSet.TemplateSetFS = templateSetFS
 	ts.ComponentSet.DefaultTemplateFileExtension = v.DefaultTemplateFileExtension
+
+	// register filters
+	for name, filter := range v.Filters {
+		if err := ts.RegisterFilter(name, filter); err != nil {
+			return nil, fmt.Errorf("failed to register filter %s: %w", name, err)
+		}
+	}
+
+	// register tags
+	for name, tag := range v.Tags {
+		if err := ts.RegisterTag(name, tag); err != nil {
+			return nil, fmt.Errorf("failed to register tag %s: %w", name, err)
+		}
+	}
 
 	// register components
 	for _, dir := range v.AnonymousComponentsDirectories {
