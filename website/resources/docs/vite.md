@@ -129,8 +129,8 @@ func main() {
 		go func() {
 			if err := v.StartViteDevServer(); err != nil {
 				e.Logger.Errorf("the vite dev server returned an error: %v", err)
-				}
-			}()
+			}
+		}()
 	}
 
 	e.Logger.Fatal(e.Start(":1323"))
