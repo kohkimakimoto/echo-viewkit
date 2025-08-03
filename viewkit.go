@@ -1,16 +1,13 @@
 package viewkit
 
 import (
-	"bufio"
 	"fmt"
+	"github.com/kohkimakimoto/echo-viewkit/pongo2"
+	"github.com/kohkimakimoto/echo-viewkit/subprocess"
 	"io"
 	"io/fs"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"sync"
-
-	"github.com/kohkimakimoto/echo-viewkit/pongo2"
 )
 
 type ViewKit struct {
@@ -126,7 +123,7 @@ func New() *ViewKit {
 		ViteDevServerCommand:                  []string{"npx", "vite", "--clearScreen=false"},
 		ViteDevServerStdout:                   os.Stdout,
 		ViteDevServerStderr:                   os.Stderr,
-		ViteDevServerLogPrefix:                "[vite] ",
+		ViteDevServerLogPrefix:                "[echo-viewkit:vite] ",
 		ViteManifest:                          nil,
 		ViteBasePath:                          "",
 	}
@@ -274,63 +271,13 @@ func (v *ViewKit) StartViteDevServer() error {
 		return fmt.Errorf("vite integration is disabled")
 	}
 
-	command := v.ViteDevServerCommand[0]
-	args := v.ViteDevServerCommand[1:]
-
-	cmd := exec.Command(command, args...)
-	// use pipes to add a prefix to each line.
-	m := new(sync.Mutex)
-	wg := &sync.WaitGroup{}
-
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return fmt.Errorf("failed to get stdout pipe: %w", err)
-	}
-	wg.Add(1)
-	go func() {
-		if err := v.scanLines(stdout, v.ViteDevServerStdout, v.ViteDevServerLogPrefix, m); err != nil {
-			_, _ = fmt.Fprintf(v.ViteDevServerStderr, "failed to scan stdout: %v", err)
-		}
-		wg.Done()
-	}()
-
-	stderr, err := cmd.StderrPipe()
-	if err != nil {
-		return fmt.Errorf("failed to get stderr pipe: %w", err)
-	}
-	wg.Add(1)
-	go func() {
-		if err := v.scanLines(stderr, v.ViteDevServerStderr, v.ViteDevServerLogPrefix, m); err != nil {
-			_, _ = fmt.Fprintf(v.ViteDevServerStderr, "failed to scan stderr: %v", err)
-		}
-		wg.Done()
-	}()
-
-	err = cmd.Start()
-	if err != nil {
-		return err
-	}
-	wg.Wait()
-
-	err = cmd.Wait()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *ViewKit) scanLines(src io.ReadCloser, dest io.Writer, prefix string, m *sync.Mutex) error {
-	scanner := bufio.NewScanner(src)
-	for scanner.Scan() {
-		// prevent mixing data in a line.
-		m.Lock()
-		_, _ = fmt.Fprintf(dest, "%s%s\n", prefix, scanner.Text())
-		m.Unlock()
-	}
-	if err := scanner.Err(); err != nil {
-		return fmt.Errorf("failed to scan lines: %w", err)
-	}
-	return nil
+	return subprocess.Run(&subprocess.Subprocess{
+		Command:   v.ViteDevServerCommand[0],
+		Args:      v.ViteDevServerCommand[1:],
+		Stdout:    v.ViteDevServerStdout,
+		Stderr:    v.ViteDevServerStderr,
+		LogPrefix: v.ViteDevServerLogPrefix,
+	})
 }
 
 func uniqueStrings(s []string) []string {
