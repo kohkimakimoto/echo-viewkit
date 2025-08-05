@@ -82,12 +82,13 @@ type ViewKit struct {
 	// ViteDevServerStdout is a writer for the Vite dev server stdout.
 	// The default value is os.Stdout.
 	ViteDevServerStdout io.Writer
+	// ViteDevServerStdoutFormatter is a formatter for the Vite dev server stdout.
+	ViteDevServerStdoutFormatter subprocess.LogFormatter
 	// ViteDevServerStderr is a writer for the Vite dev server stderr.
 	// The default value is os.Stderr.
 	ViteDevServerStderr io.Writer
-	// ViteDevServerLogPrefix is a prefix for the Vite dev server log.
-	// The default value is "[vite] ".
-	ViteDevServerLogPrefix string
+	// ViteDevServerStderrFormatter is a formatter for the Vite dev server stderr.
+	ViteDevServerStderrFormatter subprocess.LogFormatter
 	// ViteManifest is a Vite manifest.
 	// This is needed to resolve the asset paths in production environment.
 	ViteManifest ViteManifest
@@ -122,8 +123,9 @@ func New() *ViewKit {
 		ViteDevServerURL:                      "http://localhost:5173",
 		ViteDevServerCommand:                  []string{"npx", "vite", "--clearScreen=false"},
 		ViteDevServerStdout:                   os.Stdout,
+		ViteDevServerStdoutFormatter:          subprocess.PrefixFormatter("[echo-viewkit:vite] "),
 		ViteDevServerStderr:                   os.Stderr,
-		ViteDevServerLogPrefix:                "[echo-viewkit:vite] ",
+		ViteDevServerStderrFormatter:          subprocess.PrefixFormatter("[echo-viewkit:vite] "),
 		ViteManifest:                          nil,
 		ViteBasePath:                          "",
 	}
@@ -272,11 +274,12 @@ func (v *ViewKit) StartViteDevServer() error {
 	}
 
 	return subprocess.Run(&subprocess.Subprocess{
-		Command:   v.ViteDevServerCommand[0],
-		Args:      v.ViteDevServerCommand[1:],
-		Stdout:    v.ViteDevServerStdout,
-		Stderr:    v.ViteDevServerStderr,
-		LogPrefix: v.ViteDevServerLogPrefix,
+		Command:         v.ViteDevServerCommand[0],
+		Args:            v.ViteDevServerCommand[1:],
+		Stdout:          v.ViteDevServerStdout,
+		Stderr:          v.ViteDevServerStderr,
+		StdoutFormatter: v.ViteDevServerStdoutFormatter,
+		StderrFormatter: v.ViteDevServerStderrFormatter,
 	})
 }
 
