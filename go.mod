@@ -1,9 +1,12 @@
 module github.com/kohkimakimoto/echo-viewkit
 
-go 1.20
+go 1.23.0
+
+toolchain go1.24.5
 
 require (
 	github.com/google/uuid v1.6.0
+	github.com/kohkimakimoto/go-subprocess v0.2.0
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/stretchr/testify v1.10.0

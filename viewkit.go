@@ -3,7 +3,7 @@ package viewkit
 import (
 	"fmt"
 	"github.com/kohkimakimoto/echo-viewkit/pongo2"
-	"github.com/kohkimakimoto/echo-viewkit/subprocess"
+	"github.com/kohkimakimoto/go-subprocess"
 	"io"
 	"io/fs"
 	"os"
@@ -273,7 +273,7 @@ func (v *ViewKit) StartViteDevServer() error {
 		return fmt.Errorf("vite integration is disabled")
 	}
 
-	return subprocess.Run(&subprocess.Subprocess{
+	return subprocess.Run(&subprocess.Config{
 		Command:         v.ViteDevServerCommand[0],
 		Args:            v.ViteDevServerCommand[1:],
 		Stdout:          v.ViteDevServerStdout,
