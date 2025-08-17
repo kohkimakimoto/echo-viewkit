@@ -1,8 +1,6 @@
 module github.com/kohkimakimoto/echo-viewkit
 
-go 1.23.0
-
-toolchain go1.24.5
+go 1.20
 
 require (
 	github.com/google/uuid v1.6.0
