@@ -2,8 +2,6 @@
 
 A comprehensive view package for [Echo](https://github.com/labstack/echo).
 
-## Overview
-
 Echo is a high performance, extensible, minimalist Go web framework.
 It is an excellent choice for building web API servers.
 Echo also supports rendering HTML templates.
@@ -22,9 +20,7 @@ Echo ViewKit provides a component-based architecture like [Laravel Blade Compone
 Front-end build tools are essential for modern web development.
 Echo ViewKit provides a [Vite](https://vite.dev/) integration that allows you to use Vite for building front-end assets.
 
-## Website and Documentation
-
-[https://echo-viewkit.kohkimakimoto.dev](https://echo-viewkit.kohkimakimoto.dev)
+If you want to learn more about Echo ViewKit, please visit [the official website](https://echo-viewkit.kohkimakimoto.dev).
 
 ## Author
 
