@@ -2,6 +2,8 @@
 
 A comprehensive view package for [Echo](https://github.com/labstack/echo).
 
+## Introduction
+
 Echo is a high performance, extensible, minimalist Go web framework.
 It is an excellent choice for building web API servers.
 Echo also supports rendering HTML templates.
