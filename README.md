@@ -22,6 +22,8 @@ Echo ViewKit provides a component-based architecture like [Laravel Blade Compone
 Front-end build tools are essential for modern web development.
 Echo ViewKit provides a [Vite](https://vite.dev/) integration that allows you to use Vite for building front-end assets.
 
+## Official Website and Documentation
+
 If you want to learn more about Echo ViewKit, please visit [the official website](https://echo-viewkit.kohkimakimoto.dev).
 
 ## Author
