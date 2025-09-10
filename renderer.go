@@ -2,12 +2,17 @@ package viewkit
 
 import (
 	"bytes"
-	"io"
-	"strings"
-
+	"errors"
 	"github.com/kohkimakimoto/echo-viewkit/pongo2"
 	"github.com/labstack/echo/v4"
+	"io"
+	"strings"
 )
+
+// ErrSkipAssignment is returned by SharedContextProviderFunc to indicate
+// that the key-value assignment should be skipped and no value should be assigned
+// to the template context.
+var ErrSkipAssignment = errors.New("skip assignment")
 
 // Renderer is a renderer implementation for Echo.
 // see https://echo.labstack.com/docs/templates
@@ -36,6 +41,9 @@ func (r *Renderer) Render(w io.Writer, name string, data any, c echo.Context) er
 	for k, provider := range r.providers {
 		v, err := provider(c)
 		if err != nil {
+			if errors.Is(err, ErrSkipAssignment) {
+				continue
+			}
 			return err
 		}
 		pongo2Context[k] = v
