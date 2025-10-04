@@ -12,6 +12,6 @@
     "alpinejs": "^3.14.8",
     "highlight.js": "^11.11.1",
     "tailwindcss": "^4.0.1",
-    "vite": "^6.0.11"
+    "vite": "7.1.5"
   }
 }
