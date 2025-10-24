@@ -448,12 +448,15 @@ func tagComponentParser(doc *Parser, start *Token, arguments *Parser) (INodeTag,
 				return nil, err
 			}
 
-			// Check if the key is a prop or a fallthrough attribute
-			if propsMap[keyToken.Val] {
-				// the key is a prop
-				componentNode.data[keyToken.Val] = valueExpr
+			// Convert kebab-case attribute name to camelCase for props matching
+			camelCaseKey := convertToCamelCase(keyToken.Val)
+
+			// Check if the camelCase key is a prop or a fallthrough attribute
+			if propsMap[camelCaseKey] {
+				// the key is a prop (stored with camelCase key)
+				componentNode.data[camelCaseKey] = valueExpr
 			} else {
-				// the key is a fallthrough attribute
+				// the key is a fallthrough attribute (stored with original kebab-case name)
 				componentNode.attrs = append(
 					componentNode.attrs,
 					&tagComponentAttribute{
